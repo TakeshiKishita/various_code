@@ -1,0 +1,32 @@
+class Payment01 {
+		static final int M = 3000;
+		static final int[] Coin = {10,50,100,500,1000}; // 昇順ソート && M%Coin[0]==0
+		static final int N = Coin.length;
+		
+		static long payCoin(int n, long s) {
+				if (s%Coin[0]!=0) return -1;
+				if (n< 0) return 0;
+				if (n==0) return 1;
+				
+				long r = 0, m = s/Coin[n], t = s;
+				for(int i=0; i<=m; i++, t-=Coin[n]){
+						switch (n) {
+								case 1:
+										return r+(1+m);
+								case 2: // 省略可
+										return r+(1+m)*(1-m+s/Coin[1]);
+								default:
+										r+=payCoin(n-1,t);
+						}
+				}
+				return r;
+		}
+		
+		public static void main(String[] args) {
+				long tm=System.nanoTime();  // Timer Start
+				for(int i=2; i< N; i++)
+						System.out.println( payCoin(i,M) );
+				tm=System.nanoTime()-tm;    // Timer Stop
+				System.out.printf("Runtime : %.3f [sec]\n",(double)tm/1e9);
+		}
+}
